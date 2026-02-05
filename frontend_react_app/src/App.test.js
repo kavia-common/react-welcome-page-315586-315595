@@ -1,7 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import App from "./App";
 
-test("renders header brand link, welcome heading, sample button, and footer content", () => {
+test("renders finalized layout landmarks and key navigation/actions", () => {
   render(<App />);
 
   // Header brand link (anchor). Prefer accessible role/name queries.
@@ -10,16 +11,39 @@ test("renders header brand link, welcome heading, sample button, and footer cont
   expect(brandLink).toBeInTheDocument();
   expect(brandLink).toHaveAttribute("href", "/");
 
-  // Main heading
-  expect(screen.getByRole("heading", { name: /welcome/i, level: 1 })).toBeInTheDocument();
+  // Main landmark
+  const main = screen.getByRole("main");
+  expect(main).toBeInTheDocument();
 
-  // Primary action button
-  // Note: aria-label overrides the visible text for accessible name computation.
+  // H1 "Welcome" inside the main landmark
+  expect(within(main).getByRole("heading", { name: /welcome/i, level: 1 })).toBeInTheDocument();
+
+  // Primary action button (accessible name comes from aria-label)
   expect(screen.getByRole("button", { name: /run sample action/i })).toBeInTheDocument();
 
-  // Footer content
-  expect(screen.getByRole("contentinfo")).toHaveTextContent(/react welcome page/i);
+  // Footer content + link
+  const footer = screen.getByRole("contentinfo");
+  expect(footer).toHaveTextContent(/react welcome page/i);
+  expect(within(footer).getByRole("link", { name: /back to top/i })).toBeInTheDocument();
+});
 
-  // Footer link
-  expect(screen.getByRole("link", { name: /back to top/i })).toBeInTheDocument();
+test("shows a non-blocking inline success/status message after clicking the sample button", async () => {
+  const user = userEvent.setup();
+  render(<App />);
+
+  // Ensure we are not using a blocking browser alert anymore.
+  const alertSpy = jest.spyOn(window, "alert").mockImplementation(() => {});
+
+  const button = screen.getByRole("button", { name: /run sample action/i });
+  await user.click(button);
+
+  // Inline status region should announce the message.
+  const statusRegion = screen.getByRole("status");
+  expect(statusRegion).toBeInTheDocument();
+
+  // The success message should render after the click.
+  expect(within(statusRegion).getByText(/sample action triggered successfully\./i)).toBeInTheDocument();
+
+  expect(alertSpy).not.toHaveBeenCalled();
+  alertSpy.mockRestore();
 });
