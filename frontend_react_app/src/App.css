@@ -1,104 +1,229 @@
-/* CSS Variables for Theme Management */
+/* Theme (modern light) */
 :root {
-  /* Light theme colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --text-primary: #282c34;
-  --text-secondary: #61dafb;
-  --border-color: #e9ecef;
-  --button-bg: #007bff;
-  --button-text: #ffffff;
+  --color-primary: #3b82f6;
+  --color-secondary: #64748b;
+  --color-success: #06b6d4;
+
+  --color-bg: #f9fafb;
+  --color-surface: #ffffff;
+  --color-text: #111827;
+
+  --color-border: rgba(17, 24, 39, 0.12);
+  --shadow-sm: 0 1px 2px rgba(17, 24, 39, 0.06), 0 1px 3px rgba(17, 24, 39, 0.08);
+
+  --radius-md: 12px;
+
+  --container-max: 960px;
+
+  --header-height: 64px;
+  --footer-height: 56px;
+
+  --focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.35);
 }
 
-[data-theme="dark"] {
-  /* Dark theme colors */
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #282c34;
-  --text-primary: #ffffff;
-  --text-secondary: #61dafb;
-  --border-color: #404040;
-  --button-bg: #0056b3;
-  --button-text: #ffffff;
-}
-
-.App {
-  text-align: center;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
+/* App shell */
+.app {
   min-height: 100vh;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Shared container */
+.app__container {
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 16px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Fixed header */
+.app__header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  height: var(--header-height);
+  background: color-mix(in srgb, var(--color-surface) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--color-border);
+  z-index: 10;
 }
 
-.App-header {
-  background-color: var(--bg-secondary);
-  min-height: 100vh;
+.app__headerInner {
+  height: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: var(--text-primary);
-  transition: background-color 0.3s ease;
-  position: relative;
+  justify-content: space-between;
+  gap: 16px;
 }
 
-.App-link {
-  color: var(--text-secondary);
-  transition: color 0.3s ease;
+.app__brand {
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  color: var(--color-text);
 }
 
-.theme-toggle {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: var(--button-bg);
-  color: var(--button-text);
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
-  font-size: 14px;
+.app__brand:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: 10px;
+}
+
+/* Simple nav */
+.app__nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.app__navLink {
+  color: var(--color-secondary);
+  text-decoration: none;
   font-weight: 600;
+  font-size: 14px;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+.app__navLink:hover {
+  background: rgba(59, 130, 246, 0.08);
+  color: var(--color-text);
+}
+
+.app__navLink:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* Main area: accounts for fixed header/footer */
+.app__main {
+  min-height: calc(100vh - var(--header-height) - var(--footer-height));
+  padding-top: var(--header-height);
+  padding-bottom: var(--footer-height);
+  display: grid;
+  place-items: center;
+}
+
+.app__hero {
+  width: 100%;
+  max-width: 720px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  padding: 28px 22px;
+  text-align: center;
+}
+
+.app__title {
+  margin: 0;
+  font-size: 40px;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.app__subtitle {
+  margin: 12px auto 0;
+  max-width: 56ch;
+  color: var(--color-secondary);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.app__actions {
+  margin-top: 18px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+/* Buttons */
+.button {
+  appearance: none;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 1;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease,
+    border-color 120ms ease;
 }
 
-.theme-toggle:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  opacity: 0.9;
+.button--primary {
+  background: var(--color-primary);
+  color: #ffffff; /* Ensure strong contrast on primary */
+  box-shadow: 0 10px 20px rgba(59, 130, 246, 0.18);
 }
 
-.theme-toggle:active {
+.button--primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 26px rgba(59, 130, 246, 0.22);
+}
+
+.button--primary:active {
   transform: translateY(0);
+  box-shadow: 0 10px 20px rgba(59, 130, 246, 0.18);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.button:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
 }
 
-/* Responsive design for mobile */
-@media (max-width: 768px) {
-  .theme-toggle {
-    top: 10px;
-    right: 10px;
-    padding: 8px 16px;
-    font-size: 12px;
+/* Footer */
+.app__footer {
+  position: fixed;
+  inset: auto 0 0 0;
+  height: var(--footer-height);
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  z-index: 10;
+}
+
+.app__footerInner {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.app__footerText {
+  color: var(--color-secondary);
+  font-size: 13px;
+}
+
+.app__footerLink {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 13px;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+.app__footerLink:hover {
+  background: rgba(59, 130, 246, 0.08);
+}
+
+.app__footerLink:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}
+
+/* Responsive tweaks */
+@media (max-width: 480px) {
+  :root {
+    --header-height: 60px;
+    --footer-height: 56px;
+  }
+
+  .app__title {
+    font-size: 32px;
+  }
+
+  .app__hero {
+    padding: 22px 16px;
+    border-radius: 14px;
   }
 }
