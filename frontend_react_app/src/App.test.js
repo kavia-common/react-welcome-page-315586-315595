@@ -5,7 +5,8 @@ test("renders header brand link, welcome heading, sample button, and footer cont
   render(<App />);
 
   // Header brand link (anchor). Prefer accessible role/name queries.
-  const brandLink = screen.getByRole("link", { name: /react welcome/i });
+  // The brand link sets aria-label="Home", which defines its accessible name.
+  const brandLink = screen.getByRole("link", { name: /home/i });
   expect(brandLink).toBeInTheDocument();
   expect(brandLink).toHaveAttribute("href", "/");
 
