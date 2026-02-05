@@ -13,8 +13,9 @@ test("renders header brand link, welcome heading, sample button, and footer cont
   // Main heading
   expect(screen.getByRole("heading", { name: /welcome/i, level: 1 })).toBeInTheDocument();
 
-  // Primary action button (query by visible accessible name)
-  expect(screen.getByRole("button", { name: /sample button/i })).toBeInTheDocument();
+  // Primary action button
+  // Note: aria-label overrides the visible text for accessible name computation.
+  expect(screen.getByRole("button", { name: /run sample action/i })).toBeInTheDocument();
 
   // Footer content
   expect(screen.getByRole("contentinfo")).toHaveTextContent(/react welcome page/i);
